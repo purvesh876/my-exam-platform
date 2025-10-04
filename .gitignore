@@ -1,10 +1,10 @@
-node_modules,
-server/node_modules,
+# Node modules
+node_modules/
+server/node_modules/
+client/node_modules/
 
-client/node_modules,
+# Environment files
+.env
 
-.env,
-
-build,
-
-
+# Build folders
+build/

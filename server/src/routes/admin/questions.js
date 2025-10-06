@@ -35,6 +35,13 @@
 
 // export default router;
 
+
+
+
+
+
+
+
 // server/src/routes/admin/questions.js
 import express from "express";
 import mongoose from "mongoose";
@@ -47,7 +54,17 @@ const router = express.Router();
 router.post("/", verifyToken, requireRole("admin"), async (req, res) => {
   try {
     const { text, type, options, correctIndexes, marks } = req.body;
-    const q = new Question({ text, type, options, correctIndexes, marks, createdBy: req.user._id });
+    if (!text || !type || !options?.length) {
+      return res.status(400).json({ message: "Missing fields" });
+    }
+    const q = new Question({
+      text,
+      type,
+      options,
+      correctIndexes,
+      marks,
+      createdBy: req.user._id
+    });
     await q.save();
     res.json(q);
   } catch (err) {
@@ -55,6 +72,7 @@ router.post("/", verifyToken, requireRole("admin"), async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 // list questions
 router.get("/", verifyToken, requireRole("admin"), async (req, res) => {
@@ -90,3 +108,5 @@ router.delete("/:id", verifyToken, requireRole("admin"), async (req, res) => {
 });
 
 export default router;
+
+
